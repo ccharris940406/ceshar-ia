@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import chromadb
+from chromadb.config import Settings
 from langchain_chroma import Chroma
 from langchain_core.vectorstores import VectorStoreRetriever
 
@@ -7,26 +9,48 @@ from app.factory.embeddings import embeddings_factory
 from app.rag.loader import load_documents
 
 STORE_PATH = Path(__file__).parent.parent.parent / "data" / "chroma_store"
+_COLLECTION = "ceshar_docs"
 
 
-def _build_and_save() -> Chroma:
+def _make_client() -> chromadb.ClientAPI:
+    STORE_PATH.mkdir(parents=True, mode=0o755, exist_ok=True)
+    return chromadb.PersistentClient(
+        path=str(STORE_PATH),
+        settings=Settings(anonymized_telemetry=False, allow_reset=True),
+    )
+
+
+def _create_store(client: chromadb.ClientAPI) -> Chroma:
     docs = load_documents()
     return Chroma.from_documents(
         docs,
         embeddings_factory.get_embeddings(),
-        persist_directory=str(STORE_PATH),
+        client=client,
+        collection_name=_COLLECTION,
     )
 
 
 def get_retriever() -> VectorStoreRetriever:
-    embeddings = embeddings_factory.get_embeddings()
+    client = _make_client()
+    existing = [c.name for c in client.list_collections()]
 
-    if STORE_PATH.exists() and any(STORE_PATH.iterdir()):
+    if _COLLECTION in existing:
         store = Chroma(
-            persist_directory=str(STORE_PATH),
-            embedding_function=embeddings,
+            client=client,
+            collection_name=_COLLECTION,
+            embedding_function=embeddings_factory.get_embeddings(),
         )
     else:
-        store = _build_and_save()
+        store = _create_store(client)
 
+    return store.as_retriever(search_kwargs={"k": 4})
+
+
+def rebuild_store() -> VectorStoreRetriever:
+    client = _make_client()
+    try:
+        client.delete_collection(_COLLECTION)
+    except Exception:
+        pass
+    store = _create_store(client)
     return store.as_retriever(search_kwargs={"k": 4})

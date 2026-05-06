@@ -20,6 +20,9 @@ class ChatAgent:
         self.retriever: VectorStoreRetriever = get_retriever()
         self.history: list[BaseMessage] = [SystemMessage(content=_SYSTEM_PROMPT)]
 
+    def refresh_retriever(self, retriever: VectorStoreRetriever) -> None:
+        self.retriever = retriever
+
     def chat(self, user_input: str) -> str:
         docs = self.retriever.invoke(user_input)
 
