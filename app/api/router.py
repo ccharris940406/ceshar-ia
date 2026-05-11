@@ -17,7 +17,7 @@ def _get_agent(session_id: str) -> ChatAgent:
 @router.post("", response_model=ChatResponse)
 async def chat(request: ChatRequest) -> ChatResponse:
     agent = _get_agent(request.session_id)
-    response = agent.chat(request.message)
+    response = await agent.chat(request.message)
     return ChatResponse(response=response, session_id=request.session_id)
 
 
