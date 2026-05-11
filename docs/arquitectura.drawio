@@ -1,0 +1,92 @@
+<mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+
+    <!-- Usuario -->
+    <mxCell id="2" value="Usuario" style="shape=mxgraph.basic.person2;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;fontSize=13;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="50" y="270" width="60" height="80" as="geometry" />
+    </mxCell>
+
+    <!-- Discord Bot -->
+    <mxCell id="3" value="Discord Bot" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#5865F2;strokeColor=#4752c4;fontColor=#ffffff;fontSize=13;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="220" y="160" width="140" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- FastAPI -->
+    <mxCell id="4" value="FastAPI" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#009688;strokeColor=#00796b;fontColor=#ffffff;fontSize=13;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="460" y="270" width="140" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- ChatAgent -->
+    <mxCell id="5" value="ChatAgent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1e88e5;strokeColor=#1565c0;fontColor=#ffffff;fontSize=13;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="700" y="270" width="140" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- Claude API -->
+    <mxCell id="6" value="Claude API&#xa;(Anthropic)" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#e65100;strokeColor=#bf360c;fontColor=#ffffff;fontSize=13;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="920" y="230" width="170" height="110" as="geometry" />
+    </mxCell>
+
+    <!-- RAG Retriever -->
+    <mxCell id="7" value="RAG Retriever" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ff8f00;strokeColor=#e65100;fontColor=#ffffff;fontSize=13;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="693" y="430" width="155" height="90" as="geometry" />
+    </mxCell>
+
+    <!-- ChromaDB -->
+    <mxCell id="8" value="ChromaDB" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#e53935;strokeColor=#b71c1c;fontColor=#ffffff;fontSize=13;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="700" y="620" width="140" height="90" as="geometry" />
+    </mxCell>
+
+    <!-- documentation/ -->
+    <mxCell id="9" value="documentation/" style="shape=mxgraph.basic.folder2;whiteSpace=wrap;html=1;fillColor=#f9a825;strokeColor=#f57f17;fontColor=#333333;fontSize=13;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="460" y="620" width="140" height="90" as="geometry" />
+    </mxCell>
+
+    <!-- Flecha: Usuario -> Discord Bot -->
+    <mxCell id="10" value="@ceshar-ia" style="edgeStyle=orthogonalEdgeStyle;fontSize=11;fontStyle=2;" edge="1" source="2" target="3" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Flecha: Usuario -> FastAPI -->
+    <mxCell id="11" value="POST /chat" style="edgeStyle=orthogonalEdgeStyle;fontSize=11;fontStyle=2;" edge="1" source="2" target="4" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Flecha: Discord Bot -> FastAPI -->
+    <mxCell id="12" value="HTTP Request" style="edgeStyle=orthogonalEdgeStyle;fontSize=11;fontStyle=2;" edge="1" source="3" target="4" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Flecha: FastAPI -> ChatAgent -->
+    <mxCell id="13" value="chat(message)" style="edgeStyle=orthogonalEdgeStyle;fontSize=11;fontStyle=2;" edge="1" source="4" target="5" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Flecha: ChatAgent -> Claude API -->
+    <mxCell id="14" value="llm.invoke()" style="edgeStyle=orthogonalEdgeStyle;fontSize=11;fontStyle=2;" edge="1" source="5" target="6" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Flecha: Claude API -> ChatAgent (respuesta) -->
+    <mxCell id="15" value="respuesta" style="edgeStyle=orthogonalEdgeStyle;fontSize=11;fontStyle=2;dashed=1;" edge="1" source="6" target="5" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Flecha: ChatAgent -> RAG Retriever -->
+    <mxCell id="16" value="busca contexto" style="edgeStyle=orthogonalEdgeStyle;fontSize=11;fontStyle=2;" edge="1" source="5" target="7" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Flecha: RAG Retriever -> ChromaDB -->
+    <mxCell id="17" value="similarity search" style="edgeStyle=orthogonalEdgeStyle;fontSize=11;fontStyle=2;" edge="1" source="7" target="8" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Flecha: documentation/ -> ChromaDB (embeddings) -->
+    <mxCell id="18" value="embeddings" style="edgeStyle=orthogonalEdgeStyle;fontSize=11;fontStyle=2;dashed=1;" edge="1" source="9" target="8" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+  </root>
+</mxGraphModel>
