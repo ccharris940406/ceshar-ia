@@ -40,7 +40,7 @@ async def on_message(message: discord.Message):
 
     async with message.channel.typing():
         agent = _get_agent(str(message.author.id))
-        response = agent.chat(user_input)
+        response = await agent.chat(user_input)
 
     await message.reply(response)
 
