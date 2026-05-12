@@ -12,6 +12,7 @@ langchain-openai==1.2.1
 langchain-text-splitters==1.1.2
 langgraph==1.1.10
 mcp==1.26.0
+twilio==9.10.9
 httpx==0.28.1
 openai==2.35.0
 pydantic==2.13.4
