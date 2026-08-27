@@ -3,10 +3,10 @@ from pathlib import Path
 import chromadb
 from chromadb.config import Settings
 from langchain_chroma import Chroma
-from langchain_core.vectorstores import VectorStoreRetriever
 
 from app.factory.embeddings import embeddings_factory
 from app.rag.loader import load_documents
+from app.rag.rerank import RerankingRetriever, make_reranking_retriever
 
 STORE_PATH = Path(__file__).parent.parent.parent / "data" / "chroma_store"
 _COLLECTION = "ceshar_docs"
@@ -30,7 +30,7 @@ def _create_store(client: chromadb.ClientAPI) -> Chroma:
     )
 
 
-def get_retriever() -> VectorStoreRetriever:
+def get_retriever() -> RerankingRetriever:
     client = _make_client()
     existing = [c.name for c in client.list_collections()]
 
@@ -43,14 +43,14 @@ def get_retriever() -> VectorStoreRetriever:
     else:
         store = _create_store(client)
 
-    return store.as_retriever(search_kwargs={"k": 4})
+    return make_reranking_retriever(store)
 
 
-def rebuild_store() -> VectorStoreRetriever:
+def rebuild_store() -> RerankingRetriever:
     client = _make_client()
     try:
         client.delete_collection(_COLLECTION)
     except Exception:
         pass
     store = _create_store(client)
-    return store.as_retriever(search_kwargs={"k": 4})
+    return make_reranking_retriever(store)
